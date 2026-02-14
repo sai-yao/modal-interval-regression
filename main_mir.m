@@ -1,6 +1,8 @@
 %% Data
 X = X;      % covariate vector
 d_data = Y; % response vector
+test_X = Test_X(:,1);
+test_Y = Test_Y(:,1);
 
 wd_data = sort(d_data);
 sort_data = sortrows([X';d_data']');
@@ -229,4 +231,52 @@ set(gca, 'FontSize', 20, 'LineWidth', 3);
 xlabel('X');
 ylabel('Y');
 
-save('mir_coefficient.mat','c_star'); 
+save('mir_coefficient.mat','c_star');
+
+%% mCWC
+n = length(test_X);
+lower = zeros(n, 1);
+upper = zeros(n, 1);
+
+nCovered = 0;
+sumWidth = 0;
+
+c_star_m1 = c_star(1 : b*(d+1));
+c_star_m2 = c_star(b*(d+1)+1 : 2*b*(d+1));
+
+for i = 1:n
+    ii = 0;
+    for j = start_value : h_x : (end_value - h_x)
+        ii = ii + 1;
+        if (j <= test_X(i)) && (test_X(i) < j + h_x)
+            tau = (test_X(i) - j) / h_x;
+            break
+        end
+    end
+
+    for k = 0:d
+        idx = (ii - 1) * (d + 1) + (d - k + 1);
+        lower(i) = lower(i) + c_star_m1(idx) * tau^k;
+        upper(i) = upper(i) + c_star_m2(idx) * tau^k;
+    end
+
+    if (test_Y(i) <= upper(i)) && (test_Y(i) >= lower(i))
+        nCovered = nCovered + 1;
+    end
+
+    sumWidth = sumWidth + (upper(i) - lower(i));
+end
+
+PICP = nCovered / n;
+MPIW = sumWidth / n;
+
+yRange = max(test_Y) - min(test_Y);
+NMPIW = MPIW / yRange;
+
+if PICP < alpha
+    mCWC_value = NMPIW * exp(-eta * (PICP - alpha));
+else
+    mCWC_value = NMPIW;
+end
+
+fprintf('mCWC = %.6f\n', mCWC_value);
