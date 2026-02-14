@@ -26,8 +26,10 @@ The workflow is script-based: **run a single main script** and adjust parameters
 You only need to modify the parameters in `main_mir.m` and run the script.
 
 Before running, provide the input data vectors:
-- `X` — covariate vector
-- `d_data` — response (observed) vector
+- `X` — traininiig set covariate vector
+- `d_data` — training set response (observed) vector
+- `test_X` — test set covariate vector
+- `test_Y` — test set response (observed) vector
 
 Typical parameters you may want to adjust include:
 
@@ -38,7 +40,7 @@ Typical parameters you may want to adjust include:
 - **Spline smoothness (`rho`)**: the smoothness/continuity level imposed on the spline.
 - **Smoothing parameter (`lambda`)**: the regularization strength (larger values typically yield smoother curves).
 - **ADMM iterations (`iter`)**: the number of ADMM iterations (maximum iteration count) used by the solver.
-
+- **CWC penalty parameter (`eta`)**: the penalty strength parameter in mCWC.
 
 ## Notes on Spline Knots (Important)
 
@@ -50,7 +52,8 @@ In this implementation, spline knots are selected **uniformly**.
 
 ## Output
 
-Running `main_mir.m` produces a figure showing the estimated conditional MI bounds (lower and upper curves), and saves the fitted coefficient vector `c_star` to `mir_coefficient.mat`.
+Running `main_mir.m` produces a figure showing the estimated conditional MI bounds (lower and upper curves), saves the fitted coefficient vector `c_star` to `mir_coefficient.mat`, and reports interval quality metrics **mCWC** value.
+
 
 
 
