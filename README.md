@@ -6,7 +6,7 @@ The workflow is script-based: **run a single main script** and adjust parameters
 ## Contents
 - **Main script**: runs the full MIR pipeline (the method entry point).
 - **Three core functions**:
-  1. **Conditional distribution estimation** (given \(X\), estimate \(\hat F_{Y|X}\).
+  1. **Conditional distribution estimation**.
   2. **Conditional MI estimation** (extract the conditional modal interval from the estimated conditional distribution).
   3. **ADMM prox for quantile loss** (proximal operator used in the ADMM solver for the quantile-loss formulation).
 
@@ -14,7 +14,7 @@ The workflow is script-based: **run a single main script** and adjust parameters
 ## Files
 - `main_mir.m` — main script (run this)
 - `cdfe.m` — conditional distribution estimator
-- `cmie.m` — conditional MI estimator from \(\hat F_{Y|X}\) / \(\hat f_{Y|X}\)
+- `cmie.m` — conditional MI estimator
 - `per_prox.m` — prox operator for quantile loss used in ADMM
 
 ## Requirements
@@ -25,26 +25,32 @@ The workflow is script-based: **run a single main script** and adjust parameters
 
 You only need to modify the parameters in `main_mir.m` and run the script.
 
+Before running, provide the input data vectors:
+- `X` — covariate vector
+- `d_data` — response (observed) vector
+
 Typical parameters you may want to adjust include:
 
-- **Coverage level** \(\alpha\) for the conditional MI (e.g., \(\alpha=0.5\) for the 50% MI)
-- **Spline settings**, such as the spline degree/order, the number of knots, and any regularization/smoothing parameters
-- **ADMM settings**, such as the penalty parameter, maximum number of iterations, and convergence tolerance
-- **Smoothing parameters**
+- **Coverage level (`alpha`)**: the MI coverage level (e.g., `alpha = 0.5` for the 50% MI).
+- **Number of polynomial pieces (`b`)**: the number of polynomial segments over the domain.
+- **Domain endpoints (`start_value`, `end_value`)**: the left and right endpoints of the covariate domain.
+- **Polynomial degree (`d`)**: the degree of each polynomial piece.
+- **Spline smoothness (`rho`)**: the smoothness/continuity level imposed on the spline.
+- **Smoothing parameter (`lambda`)**: the regularization strength (larger values typically yield smoother curves).
+- **ADMM iterations (`iter`)**: the number of ADMM iterations (maximum iteration count) used by the solver.
 
 
 ## Notes on Spline Knots (Important)
 
 In this implementation, spline knots are selected **uniformly**.
+
 ⚠️ **To avoid a singular matrix**, when choosing knots, make sure that:
 - **Between any two neighboring knots, there are at least two data points.**
 
 
 ## Output
 
-Running `main_mir.m` typically returns and/or plots:
+Running `main_mir.m` produces a figure showing the estimated conditional MI bounds (lower and upper curves), and saves the fitted coefficient vector `c_star` to `mir_coefficient.mat`.
 
-- Estimated **lower** and **upper** bound curves of the conditional MI
-- 
 
 
