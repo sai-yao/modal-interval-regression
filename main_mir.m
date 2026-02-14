@@ -1,8 +1,8 @@
 %% Data
-X = X;      % covariate vector
-d_data = Y; % response vector
-test_X = Test_X(:,1);
-test_Y = Test_Y(:,1);
+X = input_data;      % training set covariate vector
+d_data = input_data; % training set response vector
+test_X = input_data; % test set covariate vector
+test_Y = input_data; % test set response vector
 
 wd_data = sort(d_data);
 sort_data = sortrows([X';d_data']');
@@ -219,7 +219,7 @@ figure(1)
 hold on
 
 for i = 1:L/2
-    fill([xxxx,fliplr(xxxx)],[zzzz(:,i)',fliplr(zzzz(:,L-i+1)')],[0.8500, 0.3250, 0.0980]); %estimated MI
+    fill([xxxx,fliplr(xxxx)],[zzzz(:,i)',fliplr(zzzz(:,L-i+1)')],[0.8500, 0.3250, 0.0980]);
 end
 plot(xxxx,zzzz(:,1),'k','LineWidth',5);                                                     % upper bound
 plot(xxxx,zzzz(:,2),'k','LineWidth',5);                                                     % lower bound
