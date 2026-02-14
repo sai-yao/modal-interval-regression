@@ -16,6 +16,7 @@ d = 2;           % degree of each polynomial
 rho = 1;         % smoothness of spline
 lambda = 0.001;  % smoothing parameter
 iter = 1000;     % number of  ADMM iterations
+eta = 20;        % mCWC penalty strength parameter
 
 h_x = (end_value - start_value) / b;
 spline_knots = start_value:h_x:end_value;
