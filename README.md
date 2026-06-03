@@ -54,6 +54,10 @@ In this implementation, spline knots are selected **uniformly**.
 
 Running `main_mir.m` produces a figure showing the estimated conditional MI bounds (lower and upper curves), saves the fitted coefficient vector `c_star` to `mir_coefficient.mat`, and reports interval quality metrics **mCWC** value.
 
+## Related publication
 
+This code is associated with the following paper:
+
+Yao, S., Araki, Y., and Iwata, O. (2026). Nonlinear modal interval regression for bivariate data analysis. *Journal of Applied Statistics*, 1–28. https://doi.org/10.1080/02664763.2026.2667949
 
 
